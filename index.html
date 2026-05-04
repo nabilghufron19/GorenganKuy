@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gorengan Kuy — Kriuk Tiada Duanya</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --coklat:#1a0a00;--coklat2:#2d1400;--kuning:#f5a623;--kuning2:#ffc84a;
+  --oranye:#e8621a;--oranye2:#ff7b35;--krem:#fff8f0;--krem2:#ffeedd;
+  --merah:#c0392b;--hijau:#27ae60;--text:#1a0a00;--muted:#8b5e3c;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--krem);color:var(--text);overflow-x:hidden}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(26,10,0,0.95);backdrop-filter:blur(16px);
+  padding:0 60px;height:68px;display:flex;align-items:center;justify-content:space-between;
+}
+.nav-logo{
+  font-family:'Playfair Display',serif;font-size:22px;font-weight:900;
+  color:var(--kuning);letter-spacing:-0.5px;
+}
+.nav-logo span{color:#fff}
+.nav-links{display:flex;gap:28px;list-style:none}
+.nav-links a{font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.6);text-decoration:none;transition:color .2s}
+.nav-links a:hover{color:var(--kuning)}
+.nav-cta{
+  background:var(--kuning);color:var(--coklat);font-weight:700;font-size:13px;
+  padding:10px 22px;border-radius:100px;text-decoration:none;transition:all .2s;
+}
+.nav-cta:hover{background:var(--kuning2);transform:translateY(-1px)}
+
+/* HERO */
+.hero{
+  min-height:100vh;display:flex;align-items:center;
+  background:var(--coklat);position:relative;overflow:hidden;padding:100px 60px 60px;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 900px 700px at 80% 50%,rgba(245,166,35,0.15),transparent),
+    radial-gradient(ellipse 600px 500px at 10% 80%,rgba(232,98,26,0.12),transparent);
+}
+.hero-dots{
+  position:absolute;inset:0;
+  background-image:radial-gradient(rgba(245,166,35,0.15) 1px,transparent 1px);
+  background-size:32px 32px;
+}
+.hero-inner{position:relative;z-index:1;max-width:620px}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(245,166,35,0.15);border:1px solid rgba(245,166,35,0.3);
+  border-radius:100px;padding:8px 18px;margin-bottom:28px;
+  font-size:12px;font-weight:700;color:var(--kuning);letter-spacing:1.5px;text-transform:uppercase;
+  animation:fadeUp .7s ease both;
+}
+.fire{animation:shake 0.5s infinite alternate}
+@keyframes shake{from{transform:rotate(-5deg)}to{transform:rotate(5deg)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.hero h1{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(54px,7vw,96px);font-weight:900;line-height:0.95;
+  letter-spacing:-3px;margin-bottom:12px;
+  color:#fff;animation:fadeUp .7s .1s ease both;
+}
+.hero h1 .kuning{color:var(--kuning)}
+.hero h1 .italic{font-style:italic;color:var(--oranye2)}
+.hero-tagline{
+  font-size:18px;font-weight:300;color:rgba(255,255,255,0.6);
+  line-height:1.7;margin-bottom:36px;animation:fadeUp .7s .2s ease both;
+}
+.hero-tagline strong{color:rgba(255,255,255,0.9);font-weight:600}
+.hero-actions{display:flex;gap:14px;animation:fadeUp .7s .3s ease both}
+.btn-primary{
+  background:linear-gradient(135deg,var(--kuning),var(--oranye));
+  color:var(--coklat);font-weight:800;font-size:15px;
+  padding:16px 32px;border-radius:100px;text-decoration:none;transition:all .25s;
+  border:none;cursor:pointer;font-family:inherit;
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(245,166,35,0.4)}
+.btn-ghost{
+  background:transparent;color:#fff;font-weight:600;font-size:15px;
+  padding:15px 30px;border-radius:100px;text-decoration:none;transition:all .25s;
+  border:2px solid rgba(255,255,255,0.2);
+}
+.btn-ghost:hover{border-color:var(--kuning);color:var(--kuning)}
+.hero-right{
+  position:absolute;right:0;top:0;bottom:0;width:50%;
+  display:flex;align-items:center;justify-content:center;
+}
+.hero-emoji-wrap{
+  position:relative;width:440px;height:440px;
+  animation:float 4s ease-in-out infinite;
+}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+.big-emoji{font-size:200px;filter:drop-shadow(0 20px 60px rgba(245,166,35,0.4));position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
+.orbit{position:absolute;inset:0;animation:spin 12s linear infinite}
+.orbit-item{position:absolute;font-size:44px;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.3))}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.glow-ring{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:350px;height:350px;border-radius:50%;
+  border:1px solid rgba(245,166,35,0.2);
+  box-shadow:0 0 80px rgba(245,166,35,0.1);
+}
+
+/* STATS */
+.stats{
+  background:var(--kuning);padding:28px 60px;
+  display:flex;gap:0;
+}
+.stat{flex:1;text-align:center;padding:0 20px;border-right:2px solid rgba(26,10,0,0.15)}
+.stat:last-child{border-right:none}
+.stat-num{font-family:'Playfair Display',serif;font-size:36px;font-weight:900;color:var(--coklat);line-height:1}
+.stat-label{font-size:12px;font-weight:600;color:rgba(26,10,0,0.6);margin-top:4px;letter-spacing:0.5px}
+
+/* SECTION */
+section{padding:90px 60px}
+.section-eyebrow{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--oranye);margin-bottom:10px}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(32px,4vw,52px);font-weight:900;letter-spacing:-1.5px;line-height:1.1;margin-bottom:14px;color:var(--coklat)}
+.section-sub{font-size:16px;font-weight:300;color:var(--muted);max-width:500px;line-height:1.7;margin-bottom:52px}
+
+/* UNGGULAN */
+#unggulan{background:var(--krem)}
+.unggulan-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
+.menu-card{
+  background:#fff;border-radius:24px;overflow:hidden;
+  box-shadow:0 4px 24px rgba(26,10,0,0.06);
+  transition:all .3s;cursor:pointer;
+  border:2px solid transparent;
+}
+.menu-card:hover{transform:translateY(-6px);box-shadow:0 16px 48px rgba(232,98,26,0.15);border-color:var(--oranye)}
+.menu-thumb{
+  height:180px;display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.menu-thumb .food-emoji{font-size:80px;filter:drop-shadow(0 8px 20px rgba(0,0,0,0.15));position:relative;z-index:1;transition:transform .3s}
+.menu-card:hover .food-emoji{transform:scale(1.1) rotate(-5deg)}
+.menu-thumb .bg-shape{
+  position:absolute;width:160px;height:160px;border-radius:50%;
+  opacity:0.12;
+}
+.menu-body{padding:20px}
+.menu-badge{
+  display:inline-block;font-size:10px;font-weight:700;
+  padding:3px 10px;border-radius:100px;margin-bottom:10px;
+  letter-spacing:0.5px;text-transform:uppercase;
+}
+.badge-hot{background:rgba(192,57,43,0.1);color:var(--merah)}
+.badge-best{background:rgba(245,166,35,0.15);color:#b07800}
+.badge-new{background:rgba(39,174,96,0.1);color:var(--hijau)}
+.menu-nama{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;margin-bottom:6px;color:var(--coklat)}
+.menu-desc{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:14px}
+.menu-footer{display:flex;align-items:center;justify-content:space-between}
+.menu-harga{font-size:20px;font-weight:800;color:var(--oranye)}
+.menu-harga span{font-size:13px;font-weight:400;color:var(--muted)}
+.add-btn{
+  width:38px;height:38px;border-radius:50%;
+  background:var(--oranye);color:#fff;font-size:20px;font-weight:700;
+  border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:all .2s;
+}
+.add-btn:hover{background:var(--coklat);transform:scale(1.1)}
+
+/* ANDALAN */
+#andalan{background:var(--coklat2)}
+#andalan .section-title{color:#fff}
+#andalan .section-eyebrow{color:var(--kuning2)}
+#andalan .section-sub{color:rgba(255,255,255,0.5)}
+.andalan-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.andalan-card{
+  background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);
+  border-radius:20px;padding:24px;display:flex;gap:16px;align-items:center;
+  transition:all .3s;cursor:pointer;
+}
+.andalan-card:hover{background:rgba(245,166,35,0.08);border-color:rgba(245,166,35,0.3);transform:translateX(4px)}
+.andalan-emoji{font-size:48px;flex-shrink:0}
+.andalan-info{}
+.andalan-nama{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:#fff;margin-bottom:4px}
+.andalan-desc{font-size:13px;color:rgba(255,255,255,0.45);line-height:1.5}
+.andalan-harga{font-size:16px;font-weight:700;color:var(--kuning);margin-top:8px}
+
+/* PAKET */
+#paket{background:var(--krem2)}
+.paket-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.paket-card{
+  background:#fff;border-radius:24px;padding:32px;text-align:center;
+  border:2px solid rgba(26,10,0,0.06);transition:all .3s;position:relative;overflow:hidden;
+}
+.paket-card.featured{
+  background:linear-gradient(135deg,var(--coklat),var(--coklat2));
+  border-color:var(--kuning);
+}
+.paket-card.featured .paket-nama,.paket-card.featured .paket-isi,.paket-card.featured .paket-harga{color:#fff}
+.paket-card.featured .paket-sub{color:rgba(255,255,255,0.5)}
+.featured-badge{
+  position:absolute;top:16px;right:-28px;
+  background:var(--kuning);color:var(--coklat);font-size:11px;font-weight:800;
+  padding:6px 40px;transform:rotate(35deg);letter-spacing:1px;
+}
+.paket-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(26,10,0,0.1)}
+.paket-emoji{font-size:52px;margin-bottom:16px}
+.paket-nama{font-family:'Playfair Display',serif;font-size:24px;font-weight:900;color:var(--coklat);margin-bottom:6px}
+.paket-sub{font-size:13px;color:var(--muted);margin-bottom:20px}
+.paket-isi{list-style:none;margin-bottom:24px}
+.paket-isi li{font-size:13.5px;color:var(--coklat);padding:7px 0;border-bottom:1px dashed rgba(26,10,0,0.08);display:flex;align-items:center;gap:8px}
+.paket-isi li::before{content:'✓';color:var(--oranye);font-weight:700;font-size:12px}
+.paket-harga{font-family:'Playfair Display',serif;font-size:32px;font-weight:900;color:var(--oranye);margin-bottom:20px}
+.paket-btn{
+  width:100%;background:var(--oranye);color:#fff;font-weight:700;font-size:14px;
+  padding:14px;border-radius:100px;border:none;cursor:pointer;font-family:inherit;transition:all .2s;
+}
+.paket-btn:hover{background:var(--coklat);transform:translateY(-1px)}
+.paket-card.featured .paket-btn{background:var(--kuning);color:var(--coklat)}
+
+/* CARA ORDER */
+#cara{background:#fff}
+.cara-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.cara-step{text-align:center;padding:30px 20px;position:relative}
+.cara-step:not(:last-child)::after{
+  content:'→';position:absolute;right:-10px;top:36px;
+  font-size:24px;color:rgba(26,10,0,0.15);font-weight:300;
+}
+.step-num{
+  width:60px;height:60px;border-radius:20px;
+  background:linear-gradient(135deg,var(--kuning),var(--oranye));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;font-size:26px;font-weight:900;color:#fff;
+  margin:0 auto 16px;
+}
+.step-emoji{font-size:28px;margin-bottom:12px}
+.step-title{font-size:15px;font-weight:700;color:var(--coklat);margin-bottom:6px}
+.step-desc{font-size:13px;color:var(--muted);line-height:1.6}
+
+/* TESTIMONI */
+#testimoni{background:var(--krem)}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.testi-card{
+  background:#fff;border-radius:20px;padding:24px;
+  box-shadow:0 4px 20px rgba(26,10,0,0.06);
+}
+.testi-stars{color:var(--kuning);font-size:16px;margin-bottom:12px}
+.testi-text{font-size:14px;color:var(--coklat);line-height:1.7;margin-bottom:16px;font-style:italic}
+.testi-author{display:flex;align-items:center;gap:10px}
+.testi-avatar{
+  width:38px;height:38px;border-radius:50%;
+  background:linear-gradient(135deg,var(--kuning),var(--oranye));
+  display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;flex-shrink:0;
+}
+.testi-name{font-size:13px;font-weight:700;color:var(--coklat)}
+.testi-loc{font-size:12px;color:var(--muted)}
+
+/* CTA */
+#cta{
+  background:linear-gradient(135deg,var(--coklat),var(--coklat2));
+  padding:90px 60px;text-align:center;position:relative;overflow:hidden;
+}
+#cta::before{
+  content:'🔥';position:absolute;font-size:300px;opacity:0.04;
+  top:50%;left:50%;transform:translate(-50%,-50%);
+}
+#cta h2{font-family:'Playfair Display',serif;font-size:clamp(36px,5vw,64px);font-weight:900;color:#fff;margin-bottom:14px;letter-spacing:-2px}
+#cta p{font-size:18px;color:rgba(255,255,255,0.55);margin-bottom:36px;font-weight:300}
+.cta-buttons{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.wa-btn{
+  display:flex;align-items:center;gap:10px;
+  background:#25D366;color:#fff;font-weight:700;font-size:15px;
+  padding:16px 32px;border-radius:100px;text-decoration:none;transition:all .25s;
+}
+.wa-btn:hover{background:#1da851;transform:translateY(-2px);box-shadow:0 12px 32px rgba(37,211,102,0.3)}
+
+/* FOOTER */
+footer{
+  background:var(--coklat);padding:40px 60px;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;
+}
+.footer-logo{font-family:'Playfair Display',serif;font-size:24px;font-weight:900;color:var(--kuning)}
+.footer-info{font-size:13px;color:rgba(255,255,255,0.4);line-height:1.8}
+.footer-credit{font-size:12px;color:rgba(255,255,255,0.25);text-align:right}
+.footer-credit a{color:var(--kuning2);text-decoration:none}
+
+/* CART FLOAT */
+.cart-float{
+  position:fixed;bottom:28px;right:28px;z-index:200;
+  background:var(--oranye);color:#fff;border:none;border-radius:100px;
+  padding:14px 22px;font-size:14px;font-weight:700;cursor:pointer;
+  display:flex;align-items:center;gap:8px;
+  box-shadow:0 8px 32px rgba(232,98,26,0.45);transition:all .25s;font-family:inherit;
+  transform:translateY(100px);opacity:0;
+}
+.cart-float.show{transform:translateY(0);opacity:1}
+.cart-float:hover{background:var(--coklat);transform:translateY(-2px)}
+.cart-num{
+  background:#fff;color:var(--oranye);width:22px;height:22px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;
+}
+
+/* MODAL CART */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.6);
+  z-index:300;backdrop-filter:blur(4px);display:flex;align-items:flex-end;
+  opacity:0;pointer-events:none;transition:opacity .3s;
+}
+.modal-overlay.show{opacity:1;pointer-events:all}
+.cart-panel{
+  background:#fff;border-radius:24px 24px 0 0;width:100%;max-height:80vh;overflow-y:auto;
+  padding:28px;transform:translateY(100%);transition:transform .3s;
+}
+.modal-overlay.show .cart-panel{transform:translateY(0)}
+.cp-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.cp-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--coklat)}
+.cp-close{background:none;border:none;font-size:24px;cursor:pointer;color:var(--muted)}
+.cp-item{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--krem2)}
+.cp-emoji{font-size:36px}
+.cp-info{flex:1}
+.cp-name{font-size:15px;font-weight:600;color:var(--coklat)}
+.cp-price{font-size:14px;color:var(--oranye);font-weight:600}
+.cp-qty{display:flex;align-items:center;gap:8px}
+.cp-qbtn{width:28px;height:28px;border-radius:8px;background:var(--krem2);border:none;cursor:pointer;font-size:16px;font-weight:700;color:var(--coklat)}
+.cp-total{font-size:22px;font-weight:800;color:var(--oranye);margin:20px 0 14px;text-align:right}
+.order-btn{
+  width:100%;background:linear-gradient(135deg,var(--kuning),var(--oranye));
+  color:var(--coklat);font-weight:800;font-size:16px;padding:16px;
+  border:none;border-radius:100px;cursor:pointer;font-family:inherit;transition:all .2s;
+}
+.order-btn:hover{opacity:0.9}
+.empty-cart{text-align:center;padding:40px;color:var(--muted);font-size:15px}
+
+/* REVEAL ANIM */
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s,transform .7s}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
+
+
+/* ===== TABLET ===== */
+@media(max-width:900px){
+  nav{padding:0 16px;height:58px}
+  .nav-links{display:none}
+  .nav-cta{padding:8px 16px;font-size:12px}
+  .hero{padding:80px 20px 40px;min-height:auto;flex-direction:column;text-align:center}
+  .hero-inner{max-width:100%}
+  .hero-badge{margin:0 auto 20px}
+  .hero h1{font-size:clamp(42px,10vw,64px);letter-spacing:-2px}
+  .hero-tagline{font-size:15px}
+  .hero-actions{justify-content:center}
+  .hero-right{display:none}
+  section{padding:52px 20px}
+  .section-title{font-size:clamp(26px,6vw,38px)}
+  .section-sub{font-size:14px;margin-bottom:32px}
+  .stats{padding:0;flex-wrap:wrap}
+  .stat{width:50%;border-right:none;border-bottom:1px solid rgba(26,10,0,0.1);padding:16px 10px}
+  .stat:nth-child(odd){border-right:1px solid rgba(26,10,0,0.1)}
+  .stat:nth-last-child(-n+2){border-bottom:none}
+  .unggulan-grid{grid-template-columns:repeat(2,1fr);gap:14px}
+  .andalan-grid{grid-template-columns:1fr}
+  .paket-grid{grid-template-columns:1fr;max-width:420px;margin:0 auto}
+  .cara-grid{grid-template-columns:repeat(2,1fr);gap:16px}
+  .cara-step::after{display:none}
+  .testi-grid{grid-template-columns:1fr}
+  footer{padding:28px 20px;flex-direction:column;text-align:center;gap:16px}
+  .footer-credit{text-align:center}
+  #cta{padding:60px 20px}
+}
+
+/* ===== MOBILE ===== */
+@media(max-width:540px){
+  nav{padding:0 14px;height:54px}
+  .nav-logo{font-size:18px}
+  .nav-cta{font-size:11px;padding:7px 14px}
+  .hero{padding:72px 16px 36px}
+  .hero h1{font-size:clamp(36px,12vw,52px);letter-spacing:-1.5px}
+  .hero-tagline{font-size:14px;margin-bottom:24px}
+  .btn-primary{font-size:14px;padding:13px 24px}
+  .btn-ghost{font-size:14px;padding:12px 20px}
+  section{padding:44px 16px}
+  .section-eyebrow{font-size:10px}
+  .section-title{font-size:clamp(22px,7vw,32px);letter-spacing:-1px}
+  .section-sub{font-size:13px;margin-bottom:24px}
+  .stats{flex-direction:column}
+  .stat{width:100%;border-right:none;border-bottom:1px solid rgba(26,10,0,0.1);padding:14px 16px}
+  .stat:last-child{border-bottom:none}
+  .stat-num{font-size:28px}
+  .unggulan-grid{grid-template-columns:1fr;gap:12px}
+  .menu-thumb{height:140px}
+  .menu-thumb .food-emoji{font-size:64px}
+  .menu-body{padding:14px}
+  .menu-nama{font-size:17px}
+  .andalan-card{padding:16px;gap:12px}
+  .andalan-emoji{font-size:36px}
+  .andalan-nama{font-size:16px}
+  .paket-grid{grid-template-columns:1fr;max-width:100%}
+  .paket-card{padding:24px 18px}
+  .paket-nama{font-size:20px}
+  .paket-harga{font-size:26px}
+  .cara-grid{grid-template-columns:1fr;gap:12px}
+  .cara-step{padding:20px 14px}
+  .step-num{width:48px;height:48px;font-size:20px;border-radius:14px}
+  .testi-grid{grid-template-columns:1fr}
+  .testi-card{padding:18px}
+  .cta-buttons{flex-direction:column;align-items:center}
+  .wa-btn{width:100%;justify-content:center}
+  .btn-ghost{width:100%;text-align:center}
+  #cta h2{font-size:clamp(28px,8vw,40px)}
+  #cta p{font-size:15px}
+  footer{padding:24px 16px}
+  .footer-logo{font-size:20px}
+  .cart-float{bottom:16px;right:16px;padding:12px 18px;font-size:13px}
+  .cart-panel{padding:20px 16px;border-radius:20px 20px 0 0}
+  .cp-title{font-size:18px}
+  .cp-emoji{font-size:28px}
+  .cp-name{font-size:14px}
+  .order-btn{font-size:15px;padding:14px}
+}
+
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Gorengan<span> Kuy</span></div>
+  <ul class="nav-links">
+    <li><a href="#unggulan">Menu</a></li>
+    <li><a href="#andalan">Andalan</a></li>
+    <li><a href="#paket">Paket</a></li>
+    <li><a href="#cara">Cara Order</a></li>
+    <li><a href="#testimoni">Ulasan</a></li>
+  </ul>
+  <a href="https://wa.me/6285335101970" class="nav-cta">📱 Order WA</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-dots"></div>
+  <div class="hero-inner">
+    <div class="hero-badge"><span class="fire">🔥</span> Kriuk Tiada Duanya Sejak 2020</div>
+    <h1>Gorengan<br><span class="italic">paling</span><br><span class="kuning">Kriuk!</span></h1>
+    <p class="hero-tagline">Dari <strong>Tempe Mendoan</strong> lembut, <strong>Tahu Berontak</strong> garing, sampai <strong>Weci</strong> gurih — semua fresh digoreng, siap bikin nagih!</p>
+    <div class="hero-actions">
+      <a href="#unggulan" class="btn-primary">🍽 Lihat Menu</a>
+      <a href="https://wa.me/6285335101970" class="btn-ghost">📱 Order Sekarang</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-emoji-wrap">
+      <div class="glow-ring"></div>
+      <div class="big-emoji">🍟</div>
+      <div class="orbit">
+        <div class="orbit-item" style="top:0;left:50%;transform:translateX(-50%)">🌶️</div>
+        <div class="orbit-item" style="bottom:0;left:50%;transform:translateX(-50%)">🧅</div>
+        <div class="orbit-item" style="left:0;top:50%;transform:translateY(-50%)">🌿</div>
+        <div class="orbit-item" style="right:0;top:50%;transform:translateY(-50%)">🫙</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat"><div class="stat-num">500+</div><div class="stat-label">Pelanggan Setia</div></div>
+  <div class="stat"><div class="stat-num">12</div><div class="stat-label">Menu Pilihan</div></div>
+  <div class="stat"><div class="stat-num">4.9⭐</div><div class="stat-label">Rating Rata-rata</div></div>
+  <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Fresh Digoreng</div></div>
+</div>
+
+<!-- MENU UNGGULAN -->
+<section id="unggulan">
+  <div class="section-eyebrow">Menu Unggulan</div>
+  <div class="section-title">Yang Paling Nagih 🔥</div>
+  <p class="section-sub">Semua digoreng fresh saat order masuk. Garing di luar, lembut di dalam — dijamin ketagihan!</p>
+  <div class="unggulan-grid" id="menuGrid"></div>
+</section>
+
+<!-- ANDALAN SPESIAL -->
+<section id="andalan">
+  <div class="section-eyebrow">Menu Andalan</div>
+  <div class="section-title" style="color:#fff">Spesial dari Dapur Kami</div>
+  <p class="section-sub">Menu-menu yang bikin pelanggan selalu balik lagi.</p>
+  <div class="andalan-grid" id="andalanGrid"></div>
+</section>
+
+<!-- PAKET -->
+<section id="paket">
+  <div class="section-eyebrow">Paket Hemat</div>
+  <div class="section-title">Lebih Banyak, Lebih Hemat! 🎉</div>
+  <p class="section-sub">Cocok buat santai bareng teman, arisan, atau acara keluarga.</p>
+  <div class="paket-grid reveal">
+    <div class="paket-card">
+      <div class="paket-emoji">🥡</div>
+      <div class="paket-nama">Paket Santai</div>
+      <div class="paket-sub">Buat 1-2 orang</div>
+      <ul class="paket-isi">
+        <li>3 pcs Tempe Mendoan</li>
+        <li>3 pcs Tahu Berontak</li>
+        <li>2 pcs Weci</li>
+        <li>Sambal Kecap Gratis</li>
+      </ul>
+      <div class="paket-harga">Rp 12.000</div>
+      <button class="paket-btn" onclick="orderPaket('Paket Santai','Rp 12.000')">Pesan Sekarang</button>
+    </div>
+    <div class="paket-card featured">
+      <div class="featured-badge">TERLARIS</div>
+      <div class="paket-emoji">🎉</div>
+      <div class="paket-nama">Paket Ramai</div>
+      <div class="paket-sub">Buat 3-5 orang</div>
+      <ul class="paket-isi">
+        <li>8 pcs Tempe Mendoan</li>
+        <li>6 pcs Tahu Berontak</li>
+        <li>5 pcs Weci</li>
+        <li>4 pcs Bakwan Sayur</li>
+        <li>3 pcs Pisang Goreng</li>
+        <li>Sambal + Kecap Gratis</li>
+      </ul>
+      <div class="paket-harga">Rp 28.000</div>
+      <button class="paket-btn" onclick="orderPaket('Paket Ramai','Rp 28.000')">Pesan Sekarang</button>
+    </div>
+    <div class="paket-card">
+      <div class="paket-emoji">👨‍👩‍👧‍👦</div>
+      <div class="paket-nama">Paket Keluarga</div>
+      <div class="paket-sub">Buat 6-10 orang</div>
+      <ul class="paket-isi">
+        <li>15 pcs Tempe Mendoan</li>
+        <li>12 pcs Tahu Berontak</li>
+        <li>10 pcs Weci</li>
+        <li>8 pcs Bakwan</li>
+        <li>6 pcs Pisang Goreng</li>
+        <li>5 pcs Risol Mayo</li>
+        <li>Sambal & Kecap Gratis</li>
+      </ul>
+      <div class="paket-harga">Rp 55.000</div>
+      <button class="paket-btn" onclick="orderPaket('Paket Keluarga','Rp 55.000')">Pesan Sekarang</button>
+    </div>
+  </div>
+</section>
+
+<!-- CARA ORDER -->
+<section id="cara">
+  <div class="section-eyebrow">Cara Order</div>
+  <div class="section-title">Gampang Banget! ✨</div>
+  <p class="section-sub">Order gorengan favorit kamu dalam 4 langkah mudah.</p>
+  <div class="cara-grid reveal">
+    <div class="cara-step">
+      <div class="step-num">1</div>
+      <div class="step-emoji">📱</div>
+      <div class="step-title">Pilih Menu</div>
+      <p class="step-desc">Pilih gorengan favoritmu dari daftar menu atau paket hemat yang tersedia</p>
+    </div>
+    <div class="cara-step">
+      <div class="step-num">2</div>
+      <div class="step-emoji">💬</div>
+      <div class="step-title">Chat WA</div>
+      <p class="step-desc">Klik tombol Order WA, kirim pesanan & alamat kamu ke kami</p>
+    </div>
+    <div class="cara-step">
+      <div class="step-num">3</div>
+      <div class="step-emoji">🍳</div>
+      <div class="step-title">Digoreng Fresh</div>
+      <p class="step-desc">Gorengan langsung digoreng fresh saat ordermu masuk, dijamin kriuk!</p>
+    </div>
+    <div class="cara-step">
+      <div class="step-num">4</div>
+      <div class="step-emoji">🛵</div>
+      <div class="step-title">Diantar / Ambil</div>
+      <p class="step-desc">Pilih diantar ke tempatmu atau ambil langsung di lokasi kami</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONI -->
+<section id="testimoni">
+  <div class="section-eyebrow">Ulasan Pelanggan</div>
+  <div class="section-title">Kata Mereka 💬</div>
+  <p class="section-sub">Ratusan pelanggan sudah puas. Kapan giliran kamu?</p>
+  <div class="testi-grid">
+    <div class="testi-card reveal">
+      <div class="testi-stars">⭐⭐⭐⭐⭐</div>
+      <p class="testi-text">"Mendoannya lembut banget, persis kayak yang dijual di Banyumas! Sambal kecapnya juga pas pedesnya. Sudah jadi langganan setiap sore!"</p>
+      <div class="testi-author">
+        <div class="testi-avatar">F</div>
+        <div><div class="testi-name">Fatimah R.</div><div class="testi-loc">📍 Kraksaan</div></div>
+      </div>
+    </div>
+    <div class="testi-card reveal d1">
+      <div class="testi-stars">⭐⭐⭐⭐⭐</div>
+      <p class="testi-text">"Tahu Berontak-nya gila enak! Kriuk di luar, lembut di dalam, isian sayurnya segar. Udah pesen 3x minggu ini, gak bosen-bosen 😂"</p>
+      <div class="testi-author">
+        <div class="testi-avatar">A</div>
+        <div><div class="testi-name">Ahmad S.</div><div class="testi-loc">📍 Paiton</div></div>
+      </div>
+    </div>
+    <div class="testi-card reveal d2">
+      <div class="testi-stars">⭐⭐⭐⭐⭐</div>
+      <p class="testi-text">"Paket Keluarga-nya worth it banget! Gorengannya banyak, harga terjangkau, dan pasti fresh karena langsung digoreng. Recommended buat arisan!"</p>
+      <div class="testi-author">
+        <div class="testi-avatar">N</div>
+        <div><div class="testi-name">Ning H.</div><div class="testi-loc">📍 Probolinggo</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <h2>Udah laper?<br>Order sekarang! 🔥</h2>
+  <p>Fresh digoreng, langsung diantar. Kriuk dijamin atau uang kembali!</p>
+  <div class="cta-buttons">
+    <a href="https://wa.me/6285335101970?text=Halo%20Gorengan%20Kuy!%20Saya%20mau%20order%20ya%20🔥" class="wa-btn" target="_blank">
+      <span style="font-size:22px">💬</span> Order via WhatsApp
+    </a>
+    <a href="#unggulan" class="btn-ghost" style="color:#fff;border-color:rgba(255,255,255,0.2)">🍽 Lihat Menu Dulu</a>
+  </div>
+</section>
+
+<footer>
+  <div>
+    <div class="footer-logo">Gorengan Kuy 🔥</div>
+    <div class="footer-info" style="margin-top:8px">
+      📍 Kraksaan, Jawa Timur<br>
+      📱 0853-3510-1970<br>
+      🕐 Buka setiap hari 14.00 – 21.00 WIB
+    </div>
+  </div>
+  <div class="footer-credit">
+    © 2025 Gorengan Kuy. All rights reserved.<br>
+    Website oleh <a href="https://wa.me/6285335101970">Nabil Ghufron</a>
+  </div>
+</footer>
+
+<!-- CART FLOAT -->
+<button class="cart-float" id="cartFloat" onclick="toggleCart()">
+  🛒 Keranjang <span class="cart-num" id="cartNum">0</span>
+</button>
+
+<!-- CART MODAL -->
+<div class="modal-overlay" id="cartModal" onclick="closeCartOutside(event)">
+  <div class="cart-panel">
+    <div class="cp-header">
+      <div class="cp-title">Keranjang Kamu 🛒</div>
+      <button class="cp-close" onclick="toggleCart()">✕</button>
+    </div>
+    <div id="cartContent"></div>
+  </div>
+</div>
+
+<script>
+const menuData = [
+  {id:1,nama:'Tempe Mendoan',desc:'Tempe tipis berlapis adonan tepung bumbu, digoreng setengah matang — lembut, gurih, dan nagih!',harga:2000,emoji:'🥙',badge:'badge-hot',badgeLabel:'🔥 Terpopuler',bg:'#f5a623',kat:'unggulan'},
+  {id:2,nama:'Tahu Berontak',desc:'Tahu isi sayuran segar berbalut tepung crispy — garing di luar, lembut meledak di dalam!',harga:2000,emoji:'🧆',badge:'badge-best',badgeLabel:'⭐ Best Seller',bg:'#e8621a',kat:'unggulan'},
+  {id:3,nama:'Weci / Bakwan',desc:'Bakwan sayur khas Malang-Kraksaan dengan campuran wortel, kol, dan tauge. Gurih dan renyah!',harga:1500,emoji:'🥞',badge:'badge-best',badgeLabel:'⭐ Favorit Lokal',bg:'#27ae60',kat:'unggulan'},
+  {id:4,nama:'Pisang Goreng',desc:'Pisang kepok manis berbalut tepung crispy. Manis alami, garing sempurna, cocok buat takjil!',harga:2000,emoji:'🍌',badge:'badge-hot',badgeLabel:'🔥 Hits!',bg:'#f5a623',kat:'unggulan'},
+  {id:5,nama:'Risol Mayo',desc:'Kulit lumpia renyah berisi ayam suwir, telur, dan saus mayo creamy. Kekinian dan bikin ketagihan!',harga:3000,emoji:'🌯',badge:'badge-new',badgeLabel:'✨ New!',bg:'#9b59b6',kat:'unggulan'},
+  {id:6,nama:'Bakwan Jagung',desc:'Bakwan spesial dengan jagung manis segar, daun bawang, dan rempah pilihan. Gurih dan mengenyangkan!',harga:2000,emoji:'🌽',badge:'badge-best',badgeLabel:'⭐ Recommended',bg:'#f39c12',kat:'unggulan'},
+  {id:7,nama:'Singkong Goreng',desc:'Singkong empuk bumbu bawang putih, taburan garam kristal. Simple tapi bikin susah berhenti!',harga:1500,emoji:'🍠',badge:'badge-best',badgeLabel:'⭐ Klasik',bg:'#8e44ad',kat:'unggulan'},
+  {id:8,nama:'Cireng Rujak',desc:'Aci goreng kenyal garing dicocol bumbu rujak pedas manis asam. Jajanan hits Jawa Barat!',harga:2000,emoji:'🟡',badge:'badge-new',badgeLabel:'✨ Trending',bg:'#e74c3c',kat:'unggulan'},
+];
+
+const andalanData = [
+  {id:9,nama:'Mendoan Jumbo XL',desc:'Mendoan ukuran jumbo — 2x lebih besar, 2x lebih nikmat! Cocok buat yang lapar beneran.',harga:4000,emoji:'🥙'},
+  {id:10,nama:'Tahu Pedas Mercon',desc:'Tahu isi special berbalut bumbu mercon super pedas. Challenge: bisa abis 5 biji gak?',harga:2500,emoji:'🌶️'},
+  {id:11,nama:'Gorengan Mix Box',desc:'Mix 5 jenis gorengan pilihan dalam satu box. Cocok dibawa ke mana-mana!',harga:10000,emoji:'📦'},
+  {id:12,nama:'Pisang Cokelat',desc:'Pisang goreng premium dengan lelehan cokelat dan susu kental manis. Level dessert!',harga:3500,emoji:'🍫'},
+];
+
+let cart = [];
+
+function renderMenu(){
+  document.getElementById('menuGrid').innerHTML = menuData.map(m=>`
+    <div class="menu-card reveal">
+      <div class="menu-thumb" style="background:linear-gradient(135deg,${m.bg}22,${m.bg}44)">
+        <div class="bg-shape" style="background:${m.bg}"></div>
+        <div class="food-emoji">${m.emoji}</div>
+      </div>
+      <div class="menu-body">
+        <span class="menu-badge ${m.badge}">${m.badgeLabel}</span>
+        <div class="menu-nama">${m.nama}</div>
+        <div class="menu-desc">${m.desc}</div>
+        <div class="menu-footer">
+          <div class="menu-harga">Rp ${m.harga.toLocaleString('id-ID')}<span>/pcs</span></div>
+          <button class="add-btn" onclick="addToCart(${m.id})">+</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+  document.getElementById('andalanGrid').innerHTML = andalanData.map(m=>`
+    <div class="andalan-card reveal" onclick="addToCart(${m.id})">
+      <div class="andalan-emoji">${m.emoji}</div>
+      <div class="andalan-info">
+        <div class="andalan-nama">${m.nama}</div>
+        <div class="andalan-desc">${m.desc}</div>
+        <div class="andalan-harga">Rp ${m.harga.toLocaleString('id-ID')}/pcs — klik untuk tambah</div>
+      </div>
+    </div>
+  `).join('');
+  initReveal();
+}
+
+const allMenu = [...menuData,...andalanData];
+
+function addToCart(id){
+  const item = allMenu.find(m=>m.id===id);
+  if(!item) return;
+  const exist = cart.find(c=>c.id===id);
+  if(exist) exist.qty++;
+  else cart.push({...item,qty:1});
+  updateCart();
+  showNotif('✅ '+item.nama+' ditambahkan!');
+}
+
+function removeCart(id){cart=cart.filter(c=>c.id!==id);updateCart();}
+function changeQty(id,d){
+  const item=cart.find(c=>c.id===id);
+  if(!item)return;
+  item.qty+=d;
+  if(item.qty<=0)removeCart(id);
+  else updateCart();
+}
+
+function updateCart(){
+  const total=cart.reduce((a,b)=>a+b.qty,0);
+  const totalHarga=cart.reduce((a,b)=>a+b.harga*b.qty,0);
+  document.getElementById('cartNum').textContent=total;
+  const btn=document.getElementById('cartFloat');
+  btn.className='cart-float'+(total>0?' show':'');
+  // render cart
+  const content=document.getElementById('cartContent');
+  if(!cart.length){content.innerHTML='<div class="empty-cart">🛒<br>Belum ada yang dipilih nih!<br><br><a href="#unggulan" onclick="toggleCart()" style="color:var(--oranye);font-weight:700">Pilih menu dulu →</a></div>';
+    document.querySelector('.cp-total')?.remove();
+    document.querySelector('.order-btn')?.remove();
+    return;
+  }
+  content.innerHTML = cart.map(c=>`
+    <div class="cp-item">
+      <div class="cp-emoji">${c.emoji}</div>
+      <div class="cp-info">
+        <div class="cp-name">${c.nama}</div>
+        <div class="cp-price">Rp ${(c.harga*c.qty).toLocaleString('id-ID')}</div>
+      </div>
+      <div class="cp-qty">
+        <button class="cp-qbtn" onclick="changeQty(${c.id},-1)">−</button>
+        <span style="font-weight:700;min-width:20px;text-align:center">${c.qty}</span>
+        <button class="cp-qbtn" onclick="changeQty(${c.id},1)">+</button>
+      </div>
+    </div>
+  `).join('') +
+  `<div class="cp-total">Total: Rp ${totalHarga.toLocaleString('id-ID')}</div>
+  <button class="order-btn" onclick="orderViaWA()">💬 Order via WhatsApp</button>`;
+}
+
+function orderViaWA(){
+  let msg='Halo Gorengan Kuy! 🔥 Saya mau order:\n\n';
+  cart.forEach(c=>msg+=`• ${c.nama} x${c.qty} = Rp ${(c.harga*c.qty).toLocaleString('id-ID')}\n`);
+  msg+=`\nTotal: Rp ${cart.reduce((a,b)=>a+b.harga*b.qty,0).toLocaleString('id-ID')}\n\nMohon konfirmasi ya!`;
+  window.open('https://wa.me/6285335101970?text='+encodeURIComponent(msg),'_blank');
+}
+
+function orderPaket(nama,harga){
+  const msg=`Halo Gorengan Kuy! 🔥 Saya mau order ${nama} (${harga}). Mohon konfirmasi ya!`;
+  window.open('https://wa.me/6285335101970?text='+encodeURIComponent(msg),'_blank');
+}
+
+function toggleCart(){
+  document.getElementById('cartModal').classList.toggle('show');
+}
+function closeCartOutside(e){
+  if(e.target===document.getElementById('cartModal')) toggleCart();
+}
+
+function showNotif(msg){
+  const n=document.createElement('div');
+  n.style.cssText='position:fixed;bottom:90px;right:28px;background:var(--oranye);color:#fff;padding:12px 20px;border-radius:12px;font-size:14px;font-weight:600;z-index:9999;animation:fadeUp .3s ease';
+  n.textContent=msg;document.body.appendChild(n);
+  setTimeout(()=>n.remove(),2000);
+}
+
+function initReveal(){
+  const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible')})},{threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+}
+
+renderMenu();
+updateCart();
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}
+  });
+});
+</script>
+</body>
+</html>
