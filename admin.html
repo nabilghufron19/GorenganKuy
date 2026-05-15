@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Gorengan Kuy</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚙️</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/admin.css">
+<style>
+  /* Override body untuk mode admin */
+  body { background: var(--admin-bg, #0f172a); overflow: hidden; }
+</style>
+</head>
+<body>
+
+<!-- =============================================
+     ADMIN LOGIN
+     ============================================= -->
+<div id="adminLogin" style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#0f172a;z-index:10">
+  <div class="login-card">
+    <div class="login-logo">⚙️ Admin Panel</div>
+    <div class="login-sub">Gorengan Kuy — Dashboard</div>
+    <div class="form-group">
+      <label>Username</label>
+      <input type="text" id="loginUser" placeholder="admin" value="admin">
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="loginPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="btn-login" onclick="doLogin()">Masuk →</button>
+    <div class="login-err" id="loginErr"></div>
+    <div style="margin-top:16px;font-size:12px;color:#475569;text-align:center">
+      Default: admin / admin123 (ubah di Settings)
+    </div>
+  </div>
+</div>
+
+<!-- =============================================
+     MAIN LAYOUT
+     ============================================= -->
+<div class="admin-layout" id="adminLayout" style="display:none;height:100vh">
+
+  <!-- SIDEBAR -->
+  <div class="admin-sidebar">
+    <div class="sidebar-logo">
+      <div class="lname">🔥 Gorengan Kuy</div>
+      <div class="lsub">Admin Dashboard</div>
+    </div>
+    <div class="sidebar-nav">
+      <div class="sidebar-section">Main</div>
+      <button class="sidebar-item active" onclick="switchTab('dashboard',this)"><span class="si-icon">📊</span> Dashboard</button>
+      <div class="sidebar-section">Konten</div>
+      <button class="sidebar-item" onclick="switchTab('produk',this)"><span class="si-icon">🍽️</span> Produk</button>
+      <button class="sidebar-item" onclick="switchTab('paket',this)"><span class="si-icon">📦</span> Paket</button>
+      <button class="sidebar-item" onclick="switchTab('testimoni',this)"><span class="si-icon">💬</span> Testimoni</button>
+      <div class="sidebar-section">Website</div>
+      <button class="sidebar-item" onclick="switchTab('media',this)"><span class="si-icon">🖼️</span> Media &amp; Logo</button>
+      <button class="sidebar-item" onclick="switchTab('settings',this)"><span class="si-icon">⚙️</span> Pengaturan</button>
+    </div>
+    <div class="sidebar-footer">
+      <button class="btn-to-site" onclick="window.location.href='index.html'">← Ke Website</button>
+      <button class="btn-logout" onclick="doLogout()">🚪 Logout</button>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="admin-main">
+
+    <!-- ---- DASHBOARD ---- -->
+    <div class="admin-tab active" id="tab-dashboard">
+      <div class="admin-topbar">
+        <div>
+          <div class="admin-page-title">Dashboard</div>
+          <div class="admin-page-sub">Selamat datang, Admin! 👋</div>
+        </div>
+      </div>
+      <div class="cards-row">
+        <div class="stat-card"><div class="sc-icon">🍽️</div><div class="sc-label">Total Produk</div><div class="sc-val" id="dProduk">—</div></div>
+        <div class="stat-card"><div class="sc-icon">💬</div><div class="sc-label">Testimoni</div><div class="sc-val" id="dTesti">—</div></div>
+        <div class="stat-card"><div class="sc-icon">📦</div><div class="sc-label">Menu Unggulan</div><div class="sc-val" id="dUnggulan">—</div></div>
+        <div class="stat-card"><div class="sc-icon">⭐</div><div class="sc-label">Menu Andalan</div><div class="sc-val" id="dAndalan">—</div></div>
+      </div>
+      <div class="admin-table-wrap">
+        <div class="table-header"><h3>📋 Produk Terbaru</h3></div>
+        <table class="admin-table">
+          <thead><tr><th></th><th>Nama</th><th>Kategori</th><th>Harga</th><th>Badge</th></tr></thead>
+          <tbody id="dashProdukBody"><tr><td colspan="5" style="text-align:center;color:#475569;padding:24px">Memuat data...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ---- PRODUK ---- -->
+    <div class="admin-tab" id="tab-produk">
+      <div class="admin-topbar">
+        <div>
+          <div class="admin-page-title">Kelola Produk</div>
+          <div class="admin-page-sub">Tambah, edit, atau hapus menu</div>
+        </div>
+        <button class="btn-add" onclick="openProdukForm()">+ Tambah Produk</button>
+      </div>
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead><tr><th></th><th>Nama Produk</th><th>Kategori</th><th>Harga</th><th>Badge</th><th>Aksi</th></tr></thead>
+          <tbody id="produkTableBody"><tr><td colspan="6" style="text-align:center;color:#475569;padding:24px">Memuat data...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ---- PAKET ---- -->
+    <div class="admin-tab" id="tab-paket">
+      <div class="admin-topbar">
+        <div>
+          <div class="admin-page-title">Kelola Paket</div>
+          <div class="admin-page-sub">Atur paket hemat yang tampil di landing page</div>
+        </div>
+        <button class="btn-add" onclick="openPaketForm()">+ Tambah Paket</button>
+      </div>
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead><tr><th>Emoji</th><th>Nama Paket</th><th>Keterangan</th><th>Harga</th><th>Featured</th><th>Aksi</th></tr></thead>
+          <tbody id="paketTableBody"><tr><td colspan="6" style="text-align:center;color:#475569;padding:24px">Memuat data...</td></tr></tbody>
+        </table>
+      </div>
+      <div style="padding:16px 0;font-size:12px;color:#475569">💡 Paket dengan label <strong style="color:#f5a623">TERLARIS</strong> akan ditampilkan dengan tampilan gelap (featured).</div>
+    </div>
+
+    <!-- ---- TESTIMONI ---- -->
+    <div class="admin-tab" id="tab-testimoni">
+      <div class="admin-topbar">
+        <div>
+          <div class="admin-page-title">Kelola Testimoni</div>
+          <div class="admin-page-sub">Tambah atau hapus ulasan pelanggan</div>
+        </div>
+        <button class="btn-add" onclick="openTestiForm()">+ Tambah Testimoni</button>
+      </div>
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead><tr><th>Avatar</th><th>Nama</th><th>Lokasi</th><th>Rating</th><th>Komentar</th><th>Aksi</th></tr></thead>
+          <tbody id="testiTableBody"><tr><td colspan="6" style="text-align:center;color:#475569;padding:24px">Memuat data...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ---- MEDIA & LOGO ---- -->
+    <div class="admin-tab" id="tab-media">
+      <div class="admin-topbar">
+        <div>
+          <div class="admin-page-title">Media &amp; Logo</div>
+          <div class="admin-page-sub">Upload logo, background hero, dan foto galeri</div>
+        </div>
+      </div>
+      <div class="settings-grid">
+
+        <!-- Logo Brand -->
+        <div class="settings-card">
+          <h3>🏷️ Logo Brand</h3>
+          <p style="font-size:12px;color:var(--admin-muted);margin-bottom:14px;line-height:1.6">Logo tampil di Navbar dan Hero. Format: PNG/JPG/WEBP, max 2MB. Rekomendasi ukuran minimal 200×60px.</p>
+          <div class="preview-box" style="height:100px;margin-bottom:12px" id="logoPreviewBox">
+            <div class="preview-empty">Belum ada logo</div>
+          </div>
+          <div class="upload-zone">
+            <input type="file" accept="image/*" onchange="handleUpload(event,'logo')">
+            <div class="upload-icon">📁</div>
+            <div class="upload-label"><strong>Klik atau drag</strong> foto logo ke sini</div>
+            <div class="upload-hint">PNG, JPG, WEBP · max 2MB</div>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:10px">
+            <button class="btn-save" onclick="applyLogo()" style="font-size:12px;padding:8px 14px">✅ Terapkan Logo</button>
+            <button class="btn-cancel" onclick="removeLogo()" style="font-size:12px;padding:8px 14px">🗑️ Hapus Logo</button>
+          </div>
+          <div style="margin-top:12px;padding:10px 12px;background:rgba(245,166,35,0.08);border-radius:10px;border:1px solid rgba(245,166,35,0.2);font-size:11px;color:#94a3b8;line-height:1.7">
+            💡 <strong style="color:#f5a623">Tips:</strong> Gunakan logo dengan background transparan (PNG) agar terlihat bagus di navbar gelap.
+          </div>
+        </div>
+
+        <!-- Background Hero -->
+        <div class="settings-card">
+          <h3>🌄 Background Hero</h3>
+          <p style="font-size:12px;color:var(--admin-muted);margin-bottom:14px;line-height:1.6">Gambar background di bagian hero utama. Rekomendasi ukuran 1920×1080px atau lebih besar.</p>
+          <div class="preview-box" style="height:120px;margin-bottom:12px" id="bgPreviewBox">
+            <div class="preview-empty">Pakai warna default</div>
+          </div>
+          <div class="upload-zone">
+            <input type="file" accept="image/*" onchange="handleUpload(event,'bg')">
+            <div class="upload-icon">🖼️</div>
+            <div class="upload-label"><strong>Klik atau drag</strong> gambar background</div>
+            <div class="upload-hint">JPG, PNG, WEBP · max 5MB</div>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:10px">
+            <button class="btn-save" onclick="applyBg()" style="font-size:12px;padding:8px 14px">✅ Terapkan BG</button>
+            <button class="btn-cancel" onclick="removeBg()" style="font-size:12px;padding:8px 14px">🗑️ Hapus BG</button>
+          </div>
+        </div>
+
+        <!-- Foto Produk -->
+        <div class="settings-card">
+          <h3>📸 Foto untuk Produk</h3>
+          <p style="font-size:12px;color:var(--admin-muted);margin-bottom:14px;line-height:1.6">Upload foto produk di sini. Foto yang sudah diupload bisa dipilih saat tambah/edit produk. Rekomendasi: 400×400px (1:1).</p>
+          <div class="upload-zone">
+            <input type="file" accept="image/*" multiple onchange="handleProdFotoUpload(event)">
+            <div class="upload-icon">🍽️</div>
+            <div class="upload-label"><strong>Klik atau drag</strong> foto produk</div>
+            <div class="upload-hint">Bisa pilih banyak sekaligus · JPG, PNG, WEBP · max 2MB/foto</div>
+          </div>
+          <div id="prodFotoGrid" class="media-grid" style="margin-top:12px"></div>
+        </div>
+
+        <!-- Galeri Toko -->
+        <div class="settings-card">
+          <h3>🏪 Galeri Toko / Brand</h3>
+          <p style="font-size:12px;color:var(--admin-muted);margin-bottom:14px;line-height:1.6">Foto suasana toko, tim, atau kegiatan brand.</p>
+          <div class="upload-zone">
+            <input type="file" accept="image/*" multiple onchange="handleGaleriUpload(event)">
+            <div class="upload-icon">📷</div>
+            <div class="upload-label"><strong>Klik atau drag</strong> foto galeri</div>
+            <div class="upload-hint">Bisa pilih banyak · JPG, PNG · max 3MB/foto</div>
+          </div>
+          <div id="galeriGrid" class="media-grid" style="margin-top:12px"></div>
+        </div>
+
+        <!-- Favicon -->
+        <div class="settings-card">
+          <h3>⭐ Favicon / Icon Tab</h3>
+          <p style="font-size:12px;color:var(--admin-muted);margin-bottom:14px;line-height:1.6">Icon kecil yang muncul di tab browser. Gunakan gambar persegi 64×64px (PNG transparan).</p>
+          <div class="preview-box" style="height:80px;margin-bottom:12px" id="faviconPreviewBox">
+            <div class="preview-empty">Pakai emoji default 🔥</div>
+          </div>
+          <div class="upload-zone">
+            <input type="file" accept="image/*" onchange="handleUpload(event,'favicon')">
+            <div class="upload-icon">🔖</div>
+            <div class="upload-label"><strong>Klik</strong> untuk upload favicon</div>
+            <div class="upload-hint">PNG 64×64 atau 512×512 · max 512KB</div>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:10px">
+            <button class="btn-save" onclick="applyFavicon()" style="font-size:12px;padding:8px 14px">✅ Terapkan</button>
+            <button class="btn-cancel" onclick="removeFavicon()" style="font-size:12px;padding:8px 14px">🗑️ Hapus</button>
+          </div>
+        </div>
+
+        <!-- Storage Info -->
+        <div class="settings-card">
+          <h3>💾 Info Penyimpanan</h3>
+          <p style="font-size:12px;color:var(--admin-muted);margin-bottom:14px;line-height:1.6">Foto disimpan sebagai Base64 di <strong style="color:#e2e8f0">localStorage browser</strong>. Tidak hilang saat refresh, tapi terhapus jika browser dibersihkan.</p>
+          <div style="background:var(--admin-bg);border-radius:10px;padding:14px;border:1px solid var(--admin-border)">
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+              <span style="font-size:12px;color:var(--admin-muted)">Digunakan</span>
+              <span style="font-size:12px;font-weight:700;color:var(--admin-accent)" id="storageUsed">0 KB</span>
+            </div>
+            <div style="background:var(--admin-border);border-radius:100px;height:6px;overflow:hidden">
+              <div id="storageBar" style="height:100%;background:var(--admin-accent);width:0%;transition:width .3s;border-radius:100px"></div>
+            </div>
+            <div style="font-size:11px;color:#475569;margin-top:8px">Kapasitas localStorage ~5MB</div>
+          </div>
+          <button class="btn-cancel" onclick="clearAllMedia()" style="width:100%;margin-top:12px;font-size:12px">🗑️ Hapus Semua Foto Tersimpan</button>
+        </div>
+
+      </div><!-- end settings-grid media -->
+    </div><!-- end tab-media -->
+
+    <!-- ---- SETTINGS ---- -->
+    <div class="admin-tab" id="tab-settings">
+      <div class="admin-topbar">
+        <div>
+          <div class="admin-page-title">Pengaturan Website</div>
+          <div class="admin-page-sub">Edit tampilan dan konten website — perubahan langsung teraplikasi</div>
+        </div>
+        <button class="btn-add" onclick="saveSettings()">💾 Simpan Semua</button>
+      </div>
+      <div class="settings-grid">
+
+        <div class="settings-card">
+          <h3>🏪 Info Usaha</h3>
+          <div class="form-group"><label>Nama UMKM</label><input type="text" id="sNama" placeholder="Gorengan Kuy"></div>
+          <div class="form-group"><label>Slogan</label><input type="text" id="sSlogan" placeholder="Kriuk Tiada Duanya"></div>
+          <div class="form-group"><label>Nomor WhatsApp</label><input type="text" id="sWa" placeholder="6285335101970"></div>
+          <div class="form-group"><label>Alamat</label><input type="text" id="sAlamat" placeholder="Kraksaan, Jawa Timur"></div>
+          <div class="form-group"><label>Jam Buka</label><input type="text" id="sJam" placeholder="14.00 – 21.00 WIB"></div>
+        </div>
+
+        <div class="settings-card">
+          <h3>🎨 Tampilan</h3>
+          <div class="form-group"><label>Warna Utama (Kuning)</label><input type="color" id="sKuning" value="#f5a623"></div>
+          <div class="form-group"><label>Warna Aksen (Oranye)</label><input type="color" id="sOranye" value="#e8621a"></div>
+          <div class="form-group"><label>Warna Gelap</label><input type="color" id="sCoklat" value="#1a0a00"></div>
+          <div class="form-group"><label>Emoji Hero (di tengah)</label><input type="text" id="sHeroEmoji" placeholder="🍟" maxlength="4"></div>
+        </div>
+
+        <div class="settings-card">
+          <h3>📊 Statistik Hero</h3>
+          <div class="form-group"><label>Jumlah Pelanggan</label><input type="text" id="sStat1" placeholder="500+"></div>
+          <div class="form-group"><label>Jumlah Menu</label><input type="text" id="sStat2" placeholder="12"></div>
+          <div class="form-group"><label>Rating</label><input type="text" id="sStat3" placeholder="4.9⭐"></div>
+          <div class="form-group"><label>Label Ke-4</label><input type="text" id="sStat4" placeholder="100%"></div>
+        </div>
+
+        <div class="settings-card">
+          <h3>🔐 Keamanan</h3>
+          <div class="form-group"><label>Username Admin</label><input type="text" id="sAdminUser" placeholder="admin"></div>
+          <div class="form-group"><label>Password Baru</label><input type="password" id="sAdminPass" placeholder="Kosongkan = tidak ganti"></div>
+          <div class="form-group"><label>Konfirmasi Password</label><input type="password" id="sAdminPass2" placeholder="Ulangi password baru"></div>
+        </div>
+
+      </div><!-- end settings-grid -->
+    </div><!-- end tab-settings -->
+
+    <!-- Hidden elements untuk koneksi DB -->
+    <div style="display:none">
+      <div class="conn-dot" id="connDot"></div>
+      <span id="connLabel"></span>
+    </div>
+
+  </div><!-- end admin-main -->
+</div><!-- end admin-layout -->
+
+<!-- =============================================
+     FORM MODALS
+     ============================================= -->
+
+<!-- Modal Produk -->
+<div class="modal-bg" id="produkModal">
+  <div class="form-modal">
+    <h3 id="produkModalTitle">Tambah Produk</h3>
+    <input type="hidden" id="editProdukId">
+    <div class="form-group"><label>Nama Produk *</label><input type="text" id="fNama" placeholder="Tempe Mendoan"></div>
+    <div class="frow">
+      <div class="form-group"><label>Harga (Rp) *</label><input type="number" id="fHarga" placeholder="2000" min="0"></div>
+      <div class="form-group"><label>Kategori *</label>
+        <select id="fKategori">
+          <option value="unggulan">Unggulan</option>
+          <option value="andalan">Andalan</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group"><label>Deskripsi</label><textarea id="fDesc" placeholder="Deskripsi singkat produk..."></textarea></div>
+    <div class="form-group"><label>Badge</label>
+      <select id="fBadge">
+        <option value="">— Tidak ada badge —</option>
+        <option value="badge-hot">🔥 Hot</option>
+        <option value="badge-best">⭐ Best Seller</option>
+        <option value="badge-new">✨ New</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Foto Produk <span style="color:#475569;font-weight:400">(opsional)</span></label>
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <div class="preview-box" id="prodFotoPreview" style="width:90px;height:90px;flex-shrink:0;border-radius:12px">
+          <div class="preview-empty" style="font-size:10px;padding:8px">Belum ada</div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:8px">
+          <div class="upload-zone" style="padding:12px">
+            <input type="file" accept="image/*" id="fFotoInput" onchange="handleProdFormFoto(event)">
+            <div style="font-size:11px;color:var(--admin-muted)">📁 Klik atau drag foto produk<br><span style="font-size:10px;color:#475569">JPG · PNG · WEBP · maks 2MB</span></div>
+          </div>
+          <button type="button" onclick="clearProdFoto()" id="btnClearFoto" style="display:none;background:#334155;border:none;color:#94a3b8;border-radius:8px;padding:6px 12px;font-size:11px;cursor:pointer;font-family:inherit">🗑️ Hapus foto</button>
+        </div>
+      </div>
+      <input type="hidden" id="fFotoData">
+    </div>
+    <div class="form-actions">
+      <button class="btn-save" onclick="saveProduk()">💾 Simpan</button>
+      <button class="btn-cancel" onclick="closeProdukModal()">Batal</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Testimoni -->
+<div class="modal-bg" id="testiModal">
+  <div class="form-modal">
+    <h3>Tambah Testimoni</h3>
+    <div class="frow">
+      <div class="form-group"><label>Nama Pelanggan</label><input type="text" id="tNama" placeholder="Budi S."></div>
+      <div class="form-group"><label>Lokasi</label><input type="text" id="tLokasi" placeholder="📍 Kraksaan"></div>
+    </div>
+    <div class="form-group"><label>Komentar</label><textarea id="tKomentar" placeholder="Testimoni pelanggan..."></textarea></div>
+    <div class="form-group"><label>Rating (1-5)</label>
+      <select id="tRating">
+        <option value="5">⭐⭐⭐⭐⭐ 5</option>
+        <option value="4">⭐⭐⭐⭐ 4</option>
+        <option value="3">⭐⭐⭐ 3</option>
+      </select>
+    </div>
+    <div class="form-actions">
+      <button class="btn-save" onclick="saveTesti()">💾 Simpan</button>
+      <button class="btn-cancel" onclick="closeTestiModal()">Batal</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Paket -->
+<div class="modal-bg" id="paketModal">
+  <div class="form-modal">
+    <h3 id="paketModalTitle">Tambah Paket</h3>
+    <input type="hidden" id="editPaketId">
+    <div class="frow">
+      <div class="form-group"><label>Nama Paket *</label><input type="text" id="pNama" placeholder="Paket Santai"></div>
+      <div class="form-group"><label>Emoji</label><input type="text" id="pEmoji" placeholder="🥡" maxlength="4"></div>
+    </div>
+    <div class="frow">
+      <div class="form-group"><label>Keterangan (contoh: Buat 1-2 orang)</label><input type="text" id="pSub" placeholder="Buat 1-2 orang"></div>
+      <div class="form-group"><label>Harga (Rp) *</label><input type="number" id="pHarga" placeholder="12000" min="0"></div>
+    </div>
+    <div class="form-group">
+      <label>Isi Paket * <span style="color:#475569;font-weight:400">(satu item per baris)</span></label>
+      <textarea id="pIsi" placeholder="3 pcs Tempe Mendoan&#10;3 pcs Tahu Berontak&#10;2 pcs Weci&#10;Sambal Kecap Gratis" rows="5"></textarea>
+    </div>
+    <div class="form-group">
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer">
+        <input type="checkbox" id="pFeatured" style="width:18px;height:18px;accent-color:#f5a623">
+        <span>Tandai sebagai TERLARIS (tampilan gelap + badge)</span>
+      </label>
+    </div>
+    <div class="form-actions">
+      <button class="btn-save" onclick="savePaket()">💾 Simpan</button>
+      <button class="btn-cancel" onclick="closePaketModal()">Batal</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- =============================================
+     SCRIPTS — urutan penting!
+     ============================================= -->
+<script src="js/config.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/data.js"></script>
+<script src="js/settings.js"></script>
+<script src="js/admin.js"></script>
+<script>
+/* Stub rendering functions yang tidak ada di admin.html
+   (landing page renderers tidak dipakai di sini, tapi dipanggil oleh data.js)
+   Override dengan no-op agar tidak error */
+function renderLandingProducts(){}
+function renderLandingPakets(){}
+function renderLandingTestis(){}
+
+/* Override openAdmin/closeAdmin karena di admin.html tidak ada overlay */
+function openAdmin(){}
+function closeAdmin(){ window.location.href = 'index.html'; }
+
+/* INIT */
+document.addEventListener('DOMContentLoaded', () => {
+  loadConfig();
+  initMediaDisplays();
+});
+</script>
+
+</body>
+</html>
